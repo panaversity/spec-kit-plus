@@ -69,7 +69,10 @@ There are two methods to install WSL on Windows:
 1. Open PowerShell as Administrator and run:
 ```powershell
 wsl --install
-   or 
+```
+
+   Or to install a specific distribution (like Ubuntu) directly:
+```powershell
 wsl --install -d Ubuntu
 ```
 
