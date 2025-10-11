@@ -25,7 +25,7 @@ The Unix philosophy of simple, composable tools that do one thing well aligns na
 
 ### 2.1 Windows Subsystem for Linux (WSL)
 
-WSL has matured into a production-ready solution that brings genuine Linux environments to Windows machines without virtualization overhead.
+[Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/) has matured into a production-ready solution that brings genuine Linux environments to Windows machines without virtualization overhead.
 
 **Key Advantages:**
 - **WSL 2** provides a full Linux kernel with near-native performance
