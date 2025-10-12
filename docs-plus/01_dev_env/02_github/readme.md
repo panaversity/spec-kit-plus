@@ -196,6 +196,14 @@ cat ~/.ssh/id_ed25519.pub
 ```bash
 ssh -T git@github.com
 
+# you should see:
+# The authenticity of host 'github.com (xx.xxx.xxx.xx)' can't be established.
+# ED25519 key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
+# This key is not known by any other names.
+# Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+# Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
+
+
 # You should see:
 # Hi username! You've successfully authenticated...
 ```
