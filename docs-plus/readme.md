@@ -297,7 +297,7 @@ Organizations face a binary choice:
 - Documentation: https://github.com/panaversity/spec-kit-plus/tree/main/docs-plus
 
 **AI CLI Agents:**
-- Gemini CLI: https://ai.google.dev/gemini-api/docs/cli
+- Gemini CLI:  https://gemini-cli.xyz/docs/en/
 - Claude Code: https://docs.anthropic.com/claude/docs/claude-code
 - Codex: https://platform.openai.com/docs/codex
 
