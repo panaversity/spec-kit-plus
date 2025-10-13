@@ -62,12 +62,21 @@ Direct access to system resources, processes, and configuration without abstract
 
 **Installing WSL 2:**
 
+There are two methods to install WSL on Windows:
+
+#### Method 1: Using PowerShell (Recommended)
+
 1. Open PowerShell as Administrator and run:
 ```powershell
 wsl --install
 ```
 
-* Windows 10 (version 2004 or later) or any Windows 11.
+   Or to install a specific distribution (like Ubuntu) directly:
+```powershell
+wsl --install -d Ubuntu
+```
+
+* Requires Windows 10 (version 2004 or later) or any Windows 11.
 
 2. Restart your computer when prompted
 
@@ -77,6 +86,38 @@ wsl --install
 ```powershell
 wsl --update
 ```
+
+#### Method 2: Manual Installation through Windows Features
+
+If the PowerShell command doesn't work for you, follow these steps:
+
+1. Press the Windows key, search for "Turn Windows features on or off" and select it
+
+   ![Turn Windows Features On or Off](images/Turn%20windows%20Feature%20on%20or%20of.png)
+
+2. In the Windows Features dialog, scroll down and check the following options:
+   - Windows Subsystem for Linux
+   - Virtual Machine Platform
+   
+   ![WSL Feature](images/wsl.png)
+   
+   ![Virtual Machine Platform](images/virtual%20machine.png)
+
+3. If available, also enable Hyper-V:
+
+   ![Hyper-V Feature](images/Hyper-V.png)
+
+4. Click OK and wait for Windows to apply the changes
+
+5. Restart your computer when prompted
+
+6. After restart, open Microsoft Store and search for "Ubuntu" (or your preferred Linux distribution)
+
+7. Click "Get" or "Install" to download and install the Linux distribution
+
+8. Once installed, launch the distribution from the Start menu
+
+9. The first time you launch, it will ask you to create a username and password for your Linux user
 
 **Accessing Bash:**
 - Open "Ubuntu" from the Start menu, or
