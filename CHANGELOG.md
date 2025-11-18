@@ -7,6 +7,32 @@ All notable changes to the Specify CLI and templates are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **New `/sp.build` Command for Building Command Workflows**
+  - Added `/sp.build` command to build and package Command Workflows locally for testing and distribution
+  - Provides user-friendly interface to create-release-packages.sh for developers
+  - Supports building for specific AI agents (`--agent claude`, `--agent gemini`, etc.)
+  - Supports building for specific script types (`--script sh` for bash, `--script ps` for PowerShell)
+  - Supports custom version strings (`--version v1.0.0`) or `dev` for development builds
+  - Outputs packages to `.genreleases/` directory with clear progress reporting
+  - Includes both bash (`build-workflow.sh`) and PowerShell (`build-workflow.ps1`) implementations
+  - **Why this matters**: Developers can now easily test custom commands locally before contributing:
+    - Quick iteration: Build → test → modify → rebuild cycle
+    - Validation: Verify command templates and scripts work correctly
+    - Distribution: Create packages for specific agents without building everything
+    - Documentation: Built-in help and usage examples
+  - **Usage examples**:
+    - `/sp.build` - Build all agents and script types
+    - `/sp.build --agent claude --script sh` - Build only Claude with bash
+    - `/sp.build --version v1.0.0` - Build with specific version
+  - Files added:
+    - `templates/commands/build.md` - Command template with comprehensive documentation
+    - `scripts/bash/build-workflow.sh` - Bash implementation with JSON output support
+    - `scripts/powershell/build-workflow.ps1` - PowerShell implementation for Windows
+
 ## [0.0.17] - 2025-10-28
 
 ### Changed
