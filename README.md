@@ -62,6 +62,7 @@ Use `specifyplus` or `sp` commands instead of `specify`.
 ## Table of Contents
 
 - [🤔 What is Spec-Driven Development?](#-what-is-spec-driven-development)
+  - [🤖 NEW: AI Native Software Development](#-new-ai-native-software-development)
 - [⚡ Get Started](#-get-started)
 - [📽️ Video Overview](#️-video-overview)
 - [🤖 Supported AI Agents](#-supported-ai-agents)
@@ -81,6 +82,31 @@ Use `specifyplus` or `sp` commands instead of `specify`.
 ## 🤔 What is Spec-Driven Development?
 
 Spec-Driven Development **flips the script** on traditional software development. For decades, code has been king — specifications were just scaffolding we built and discarded once the "real work" of coding began. Spec-Driven Development changes this: **specifications become executable**, directly generating working implementations rather than just guiding them.
+
+### 🤖 NEW: AI Native Software Development
+
+SpecKitPlus now supports **AI Native Software Development** - a workflow specifically designed for building AI systems that replace or augment professional work.
+
+**What's Different?**
+
+Traditional SDD builds features. **AI Native SDD builds AI agents that do professional work**.
+
+Inspired by Jake Heller (Casetext founder, $650M acquisition):
+- **Domain Knowledge First**: Deeply understand the professional work before building
+- **Evals-Driven Development**: Define "what good looks like" with rigorous evaluation criteria
+- **The Grind to 97%+**: Iterate on prompts and models until hitting production quality (don't ship at 60%)
+- **Value-Based Pricing**: Charge 10-20% of value delivered, not SaaS commodity pricing
+
+**New Commands**:
+- `/sp.agent.domain_knowledge` - Capture deep expertise about the professional work
+- `/sp.agent.business_success_evals` - Define measurable success criteria (the difference between demos and products)
+
+**Pre-Built Skills** (in `/templates/skills/`):
+- MCP Builder L1 - Build Model Context Protocol servers for agent tools
+- MCP Exam - Validate your MCP knowledge
+- OpenAI Agents SDK L2 - Build production-grade multi-agent systems
+
+📖 **[Read the full AI Native Workflow Guide →](./docs-plus/09_ai_native_workflow/readme.md)**
 
 ## ⚡ Get Started
 
