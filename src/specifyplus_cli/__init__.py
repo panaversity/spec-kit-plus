@@ -151,6 +151,12 @@ AGENT_CONFIG = {
         "install_url": "https://ampcode.com/manual#install",
         "requires_cli": True,
     },
+    "antigravity": {
+        "name": "Google Anti-Gravity",
+        "folder": ".idx/",
+        "install_url": None,
+        "requires_cli": False,
+    },
 }
 
 SCRIPT_TYPE_CHOICES = {"sh": "POSIX Shell (bash/zsh)", "ps": "PowerShell"}
@@ -584,6 +590,7 @@ def merge_json_files(existing_path: Path, new_content: dict, verbose: bool = Fal
 def download_template_from_github(ai_assistant: str, download_dir: Path, *, script_type: str = "sh", verbose: bool = True, show_progress: bool = True, client: httpx.Client = None, debug: bool = False, github_token: str = None) -> Tuple[Path, dict]:
     repo_owner = "panaversity"
     repo_name = "spec-kit-plus"
+    
     if client is None:
         client = httpx.Client(verify=ssl_context)
 

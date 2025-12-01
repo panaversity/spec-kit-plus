@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "spec-kit": {
+      "command": "python",
+      "args": [".idx/specify_mcp.py"]
+    }
+  }
+}

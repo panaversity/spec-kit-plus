@@ -7,6 +7,23 @@ All notable changes to the Specify CLI and templates are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Google Anti-Gravity Agent Support**
+  - Added official support for Google Anti-Gravity IDE agent with Google IDX integration
+  - Implemented split-config approach for Google IDX/Firebase Studio compatibility:
+    - `.idx/dev.nix` - Runtime environment setup (Python 3.11, uv, mcp library)
+    - `.idx/mcp.json` - MCP server registration for Google IDX
+    - `.idx/specify_mcp.py` - FastMCP server with specify and plan prompts
+  - Agent configuration in `src/specify_cli/__init__.py` with folder `.idx/`
+  - Build scripts updated to generate antigravity release packages with template copying
+  - Agent context update scripts (bash and PowerShell) support antigravity
+  - Template files created in `templates/antigravity/`
+  - Documentation updated with Anti-Gravity in supported agents table
+  - Slash commands work via MCP server integration in Google IDX
+
 ## [0.0.17] - 2025-10-28
 
 ### Changed

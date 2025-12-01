@@ -200,6 +200,7 @@ build_variant() {
       codebuddy) agent_name="CodeBuddy" ;;
       amp) agent_name="AWS Amplify AI" ;;
       q) agent_name="Amazon Q Developer CLI" ;;
+      antigravity) agent_name="Google Anti-Gravity" ;;
       *) agent_name="$agent" ;;
     esac
     
@@ -274,6 +275,11 @@ This file is generated during init for the selected agent.
         echo "$full_content" > "$base_dir/AMP.md"
         echo "Generated AMP.md"
         ;;
+      antigravity)
+        mkdir -p "$base_dir/.idx"
+        echo "$full_content" > "$base_dir/.idx/specify-rules.md"
+        echo "Generated .idx/specify-rules.md"
+        ;;
     esac
   }
 
@@ -337,13 +343,21 @@ This file is generated during init for the selected agent.
       mkdir -p "$base_dir/.amazonq/prompts"
       generate_commands q md "\$ARGUMENTS" "$base_dir/.amazonq/prompts" "$script"
       generate_agent_rules q "$base_dir" ;;
+    antigravity)
+      mkdir -p "$base_dir/.idx"
+      generate_commands antigravity md "\$ARGUMENTS" "$base_dir/.idx" "$script"
+      # Copy MCP server and configuration templates
+      cp templates/antigravity/specify_mcp.py "$base_dir/.idx/" 2>/dev/null || true
+      cp templates/antigravity/dev.nix "$base_dir/.idx/" 2>/dev/null || true
+      cp templates/antigravity/mcp.json "$base_dir/.idx/" 2>/dev/null || true
+      generate_agent_rules antigravity "$base_dir" ;;
   esac
   ( cd "$base_dir" && zip -r "../spec-kit-template-${agent}-${script}-${NEW_VERSION}.zip" . )
   echo "Created $GENRELEASES_DIR/spec-kit-template-${agent}-${script}-${NEW_VERSION}.zip"
 }
 
 # Determine agent list
-ALL_AGENTS=(claude gemini copilot cursor-agent qwen opencode windsurf codex kilocode auggie roo codebuddy amp q)
+ALL_AGENTS=(claude gemini copilot cursor-agent qwen opencode windsurf codex kilocode auggie roo codebuddy amp q antigravity)
 ALL_SCRIPTS=(sh ps)
 
 norm_list() {

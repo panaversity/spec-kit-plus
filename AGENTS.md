@@ -119,6 +119,7 @@ Specify supports multiple AI agents by generating agent-specific command files a
 | **CodeBuddy CLI** | `.codebuddy/commands/` | Markdown | `codebuddy` | CodeBuddy CLI |
 | **Amazon Q Developer CLI** | `.amazonq/prompts/` | Markdown | `q` | Amazon Q Developer CLI |
 | **Amp** | `.agents/commands/` | Markdown | `amp` | Amp CLI |
+| **Google Anti-Gravity** | `.idx/` | Python (MCP) | N/A (IDE-based) | Google IDX with MCP server |
 
 ### Step-by-Step Integration Guide
 
