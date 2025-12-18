@@ -184,7 +184,13 @@ build_variant() {
   fi
   
   [[ -d templates ]] && { mkdir -p "$SPEC_DIR/templates"; find templates -type f -not -path "templates/commands/*" -not -name "vscode-settings.json" -exec cp --parents {} "$SPEC_DIR"/ \; ; echo "Copied templates -> .specify/templates"; }
-  
+
+  # Copy sample playbooks to project root
+  [[ -d playbooks ]] && { cp -r playbooks "$base_dir/"; echo "Copied playbooks -> playbooks/"; }
+
+  # Create empty history directories
+  mkdir -p "$base_dir/history/prompts/general" "$base_dir/history/adr"
+
   # NOTE: We substitute {ARGS} internally. Outward tokens differ intentionally:
   #   * Markdown/prompt (claude, copilot, cursor-agent, opencode): $ARGUMENTS
   #   * TOML (gemini, qwen): {{args}}

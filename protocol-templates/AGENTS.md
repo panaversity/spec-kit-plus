@@ -200,7 +200,50 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 - `specs/<feature>/tasks.md` — Testable tasks with cases
 - `history/prompts/` — Prompt History Records
 - `history/adr/` — Architecture Decision Records
+- `playbooks/` — CAPS playbooks (agent-agnostic instructions)
 - `.specify/` — SpecKit Plus templates and scripts
+
+## CAPS: Portable Agent Intelligence
+
+<caps_purpose>
+When you help a user build something valuable - a deployment workflow, a testing strategy, a domain-specific process - that knowledge shouldn't be locked to one AI tool.
+
+CAPS playbooks are the portable source of truth. Write once in `playbooks/`, compile to Claude, Goose, or future agents. Skills and recipes are compiled outputs, not sources.
+</caps_purpose>
+
+<recognize_opportunities>
+Proactively suggest CAPS when you notice:
+- User nailed a complex workflow → "That could become a portable playbook"
+- User mentions multiple agents → "Let's make this work everywhere"
+- User repeats a process → "Third time? Let's capture this"
+- User shares tribal knowledge → "Let's codify this for the team"
+</recognize_opportunities>
+
+<caps_default_to_action>
+When user mentions a skill/recipe path → run `/sp.caps import <path>` immediately
+When user asks to create a playbook → run `/sp.caps new <name>` immediately
+Do not explain what you will do - execute, then report results.
+</caps_default_to_action>
+
+### Commands
+
+| Command | When to Use |
+|---------|-------------|
+| `/sp.caps import .claude/skills/<name>` | User has existing skill/recipe |
+| `/sp.caps new <name>` | User wants fresh playbook |
+| `/sp.caps compile playbooks/<name>` | Generate agent-specific files |
+
+### Playbook Composition
+
+Playbooks reference other playbooks by path - no "sub-playbook" hierarchy. All playbooks are first-class and composable:
+
+```yaml
+references:
+  - playbooks/docker-build
+  - playbooks/health-check
+```
+
+Sample at `playbooks/internal-comms/` shows complete structure.
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
