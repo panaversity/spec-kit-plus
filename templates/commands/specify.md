@@ -21,6 +21,164 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
+## Interview Mode Detection
+
+Check if `$ARGUMENTS` contains the `--interview` flag:
+
+- **If `--interview` is present**: Enable interview mode, strip the flag from the description
+- **If `--interview` is absent**: Continue with standard flow (skip to [Outline](#outline))
+
+**Syntax Examples**:
+- `/sp.specify --interview Add user authentication` → Interview mode ON, description = "Add user authentication"
+- `/sp.specify Add user authentication` → Standard mode (no interview)
+
+When interview mode is enabled, execute the **Interview Flow** section below before proceeding to the Outline.
+
+---
+
+## Interview Flow (Interview Mode Only)
+
+When `--interview` flag is detected, execute this interview process before spec generation. The interview is fully AI-driven with no predefined questions or categories.
+
+### Step I-1: Analyze Feature Description
+
+Carefully analyze the user's feature description to identify:
+
+1. **What is clearly specified** - Extract concrete details already provided
+2. **What is ambiguous or missing** - Identify gaps that would lead to [NEEDS CLARIFICATION] markers
+3. **What assumptions would you make** - Note where you'd have to guess without user input
+
+Focus on aspects that significantly impact:
+- Feature scope and boundaries
+- User experience and workflows
+- Data handling and security
+- Integration points
+- Success measurement
+
+### Step I-2: Generate Targeted Questions
+
+Based on your analysis, generate **3-7 targeted questions** specific to THIS feature.
+
+**Question Generation Rules**:
+- Only ask about genuinely unclear aspects
+- Skip anything already answered in the description
+- Prioritize by impact: scope > security > UX > technical details
+- Each question should resolve a potential [NEEDS CLARIFICATION] marker
+- Questions must be specific to this feature, not generic
+
+**Do NOT**:
+- Use predefined question templates
+- Ask about things that have reasonable defaults
+- Ask multiple questions about the same ambiguity
+
+### Step I-3: Execute Interview
+
+There are two modes for conducting the interview. Use **Interactive Mode** if you can present questions one at a time and wait for responses. Use **Questionnaire Mode** as a fallback if you cannot do multi-turn interactions.
+
+---
+
+#### Option A: Interactive Mode (Preferred)
+
+Present questions ONE at a time. For each question:
+
+```markdown
+## Question [N]/[TOTAL]: [Specific Topic]
+
+**Why this matters**: [1 sentence explaining impact on the specification]
+
+[Your question here - be specific and contextual]
+
+You can answer with a short response, or say "skip" to move on.
+```
+
+**Interview Rules**:
+1. Present exactly ONE question, then wait for response
+2. **Do NOT recommend or suggest answers** - you're asking because you genuinely don't know
+3. Accept the user's answer as-is
+4. If the answer is unclear, ask a brief follow-up for clarification
+5. Record each answer for use in spec generation
+6. Proceed to next question
+
+**Stop Conditions** (whichever comes first):
+- All questions answered
+- User signals "done", "skip all", or "enough"
+- Maximum 7 questions reached
+
+---
+
+#### Option B: Questionnaire Mode (Fallback)
+
+Use this mode if:
+- You cannot reliably pause and wait for user responses between questions
+- The environment doesn't support multi-turn interactions
+- User requests all questions upfront
+
+Present all questions as a numbered questionnaire:
+
+```markdown
+## Interview Questionnaire
+
+I have [N] questions to clarify before generating the specification. Please answer each briefly (or write "skip" to skip any).
+
+---
+
+**Q1: [Topic]**
+[Why this matters]: [1 sentence]
+[Question]
+
+**Q2: [Topic]**
+[Why this matters]: [1 sentence]
+[Question]
+
+**Q3: [Topic]**
+[Why this matters]: [1 sentence]
+[Question]
+
+...
+
+---
+
+Please respond with your answers (e.g., "Q1: answer, Q2: answer, Q3: skip").
+```
+
+**Questionnaire Rules**:
+1. Present ALL questions in a single message
+2. **Do NOT recommend or suggest answers**
+3. Number questions clearly (Q1, Q2, Q3...)
+4. Accept answers in any reasonable format (numbered, bulleted, or prose)
+5. If an answer is unclear, ask ONE follow-up message for all unclear items
+
+---
+
+### Step I-4: Confirm Understanding
+
+After all questions are answered (either mode), summarize back to the user:
+
+```markdown
+## Interview Complete
+
+Based on your answers, here's what I understood:
+
+- **[Topic 1]**: [Summary of answer and how it will be used]
+- **[Topic 2]**: [Summary of answer and how it will be used]
+- ...
+
+Does this look correct? (yes to proceed, or clarify any points)
+```
+
+Wait for user confirmation before proceeding.
+
+### Step I-5: Prepare Interview Context
+
+Build an interview context containing:
+- All Q&A pairs
+- How each answer maps to spec sections
+- Any remaining ambiguities not covered by interview
+
+This context enriches the spec generation in the Outline section.
+
+---
+
 ## Outline
 
 The text the user typed after `/sp.specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
@@ -72,34 +230,68 @@ Given that feature description, do this:
    - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot")
 
 3. Load `templates/spec-template.md` to understand required sections.
+   - **If interview mode was used**: Also load the interview context from Step I-5.
 
 4. Follow this execution flow:
 
     1. Parse user description from Input
        If empty: ERROR "No feature description provided"
+       **If interview mode**: Merge description with interview answers (answers enrich the description)
+
     2. Extract key concepts from description
        Identify: actors, actions, data, constraints
+       **If interview mode**: Use interview-confirmed values where available
+
     3. For unclear aspects:
        - Make informed guesses based on context and industry standards
+       - **If interview mode**: First check if interview already answered this
        - Only mark with [NEEDS CLARIFICATION: specific question] if:
          - The choice significantly impacts feature scope or user experience
          - Multiple reasonable interpretations exist with different implications
          - No reasonable default exists
+         - **AND interview did not already provide an answer**
        - **LIMIT: Maximum 3 [NEEDS CLARIFICATION] markers total**
        - Prioritize clarifications by impact: scope > security/privacy > user experience > technical details
+
     4. Fill User Scenarios & Testing section
        If no clear user flow: ERROR "Cannot determine user scenarios"
+       **If interview mode**: Use confirmed actor from interview if provided
+
     5. Generate Functional Requirements
        Each requirement must be testable
        Use reasonable defaults for unspecified details (document assumptions in Assumptions section)
+       **If interview mode**: Incorporate relevant interview answers into requirements
+
     6. Define Success Criteria
        Create measurable, technology-agnostic outcomes
        Include both quantitative metrics (time, performance, volume) and qualitative measures (user satisfaction, task completion)
        Each criterion must be verifiable without implementation details
+       **If interview mode**: Use interview-provided success metrics if available
+
     7. Identify Key Entities (if data involved)
-    8. Return: SUCCESS (spec ready for planning)
+
+    8. **If interview mode AND scope boundaries were discussed**: Add Out of Scope subsection
+       Format as bullet list under Requirements section
+
+    9. Return: SUCCESS (spec ready for planning)
 
 5. Write the specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description (arguments) while preserving section order and headings.
+
+   **If interview mode was used**: Add an Interview Summary section at the end of the spec:
+
+   ```markdown
+   ## Interview Summary
+
+   This specification was generated with pre-interview clarification ([N] questions answered).
+
+   ### Key Decisions
+
+   | Topic | Decision |
+   |-------|----------|
+   | [Topic from Q1] | [User's answer] |
+   | [Topic from Q2] | [User's answer] |
+   | ... | ... |
+   ```
 
 6. **Specification Quality Validation**: After writing the initial spec, validate it against quality criteria:
 
@@ -131,14 +323,19 @@ Given that feature description, do this:
       - [ ] Dependencies and assumptions identified
       
       ## Feature Readiness
-      
+
       - [ ] All functional requirements have clear acceptance criteria
       - [ ] User scenarios cover primary flows
       - [ ] Feature meets measurable outcomes defined in Success Criteria
       - [ ] No implementation details leak into specification
-      
+
+      ## Interview Integration (if `--interview` was used)
+
+      - [ ] All interview answers are reflected in appropriate spec sections
+      - [ ] Interview Summary section is present at end of spec with key decisions table
+
       ## Notes
-      
+
       - Items marked incomplete require spec updates before `/sp.clarify` or `/sp.plan`
       ```
 
