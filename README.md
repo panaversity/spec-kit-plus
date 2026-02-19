@@ -73,7 +73,6 @@ Use `specifyplus` or `sp` commands instead of `specify`.
 - [📖 Learn More](#-learn-more)
 - [📋 Detailed Process](#-detailed-process)
 - [🔍 Troubleshooting](#-troubleshooting)
-- [👥 Maintainers](#-maintainers)
 - [💬 Support](#-support)
 - [🙏 Acknowledgements](#-acknowledgements)
 - [📄 License](#-license)
@@ -227,6 +226,7 @@ Want to see Spec Kit in action? Watch our [video overview](https://www.youtube.c
 | [Roo Code](https://roocode.com/)                                                     | ✅      |                                                                                                                                           |
 | [SHAI (OVHcloud)](https://github.com/ovh/shai)                                       | ✅      |                                                                                                                                           |
 | [Windsurf](https://windsurf.com/)                                                    | ✅      |                                                                                                                                           |
+| [Antigravity (agy)](https://agy.ai/)                                                 | ✅      |                                                                                                                                           |
 
 ## 🔧 Specify CLI Reference
 
@@ -252,7 +252,7 @@ The `specify` command supports the following options:
 | Argument/Option        | Type     | Description                                                                                                                                                                                  |
 | ---------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `<project-name>`       | Argument | Name for your new project directory (optional if using `--here`, or use `.` for current directory)                                                                                           |
-| `--ai`                 | Option   | AI assistant to use: `claude`, `gemini`, `copilot`, `cursor-agent`, `qwen`, `opencode`, `codex`, `windsurf`, `kilocode`, `auggie`, `roo`, `codebuddy`, `amp`, `shai`, `q`, `bob`, or `qoder` |
+| `--ai`                 | Option   | AI assistant to use: `claude`, `gemini`, `copilot`, `cursor-agent`, `qwen`, `opencode`, `codex`, `windsurf`, `kilocode`, `auggie`, `roo`, `codebuddy`, `amp`, `shai`, `q`, `agy`, `bob`, or `qoder` |
 | `--script`             | Option   | Script variant to use: `sh` (bash/zsh) or `ps` (PowerShell)                                                                                                                                  |
 | `--ignore-agent-tools` | Flag     | Skip checks for AI agent tools like Claude Code                                                                                                                                              |
 | `--no-git`             | Flag     | Skip git repository initialization                                                                                                                                                           |
@@ -726,11 +726,6 @@ echo "Cleaning up..."
 rm gcm-linux_amd64.2.6.1.deb
 ```
 
-## 👥 Maintainers
-
-- Den Delimarsky ([@localden](https://github.com/localden))
-- John Lam ([@jflam](https://github.com/jflam))
-
 ## 🤝 Contributing
 
 We welcome contributions from the community! SpecifyPlus uses a **test-first contribution model** where you develop and validate commands in your own projects before contributing them to the core repository.
@@ -751,8 +746,7 @@ git clone https://github.com/panaversity/spec-kit-plus.git
 
 ### Contribution Resources
 
-- **🔧 [Contributing Guide](CONTRIBUTING.md)** - Setup, testing, and submission process
-- **⚡ [Quick Reference](#quick-reference)** - Common command patterns and examples
+- **[Contributing Guide](CONTRIBUTING.md)** - Setup, testing, and submission process
 
 ### Popular Contribution Areas
 
@@ -761,6 +755,7 @@ git clone https://github.com/panaversity/spec-kit-plus.git
 - **Shell scripts** for automation (Bash/PowerShell)
 - **Documentation** and guides
 - **Bug fixes** and performance improvements
+
 
 ## 💬 Support
 

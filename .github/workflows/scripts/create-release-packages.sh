@@ -34,7 +34,8 @@ rewrite_paths() {
   sed -E \
     -e 's@(/?)memory/@.specify/memory/@g' \
     -e 's@(/?)scripts/@.specify/scripts/@g' \
-    -e 's@(/?)templates/@.specify/templates/@g'
+    -e 's@(/?)templates/@.specify/templates/@g' \
+    -e 's@\.specify\.specify/@.specify/@g'
 }
 
 generate_commands() {
@@ -43,11 +44,14 @@ generate_commands() {
   
   # Load command-rules.md for prepending (universal pre-execution rules)
   local command_rules_content=""
-  if [[ -f "memory/command-rules.md" ]]; then
-    command_rules_content=$(tr -d '\r' < "memory/command-rules.md")
+  if [[ -f "templates/command-rules.md" ]]; then
+    command_rules_content=$(tr -d '\r' < "templates/command-rules.md")
     echo "Loaded command-rules.md for universal pre-execution injection"
+  elif [[ -f "memory/command-rules.md" ]]; then
+    command_rules_content=$(tr -d '\r' < "memory/command-rules.md")
+    echo "Loaded command-rules.md (legacy path) for universal pre-execution injection"
   else
-    echo "Warning: memory/command-rules.md not found - commands will not have implicit behavior support" >&2
+    echo "Warning: command-rules.md not found - commands will not have implicit behavior support" >&2
   fi
   
   for template in templates/commands/*.md; do
@@ -158,13 +162,18 @@ build_variant() {
   # with an agent-specific preface, eliminating redundancy.
 
   # If constitutionplus.md exists, overwrite constitution.md in release package
-  if [[ -f memory/constitutionplus.md ]]; then
+  if [[ -f templates/constitutionplus.md ]]; then
+    mkdir -p "$SPEC_DIR/memory"
+    cp templates/constitutionplus.md "$SPEC_DIR/memory/constitution.md"
+    echo "Injected constitutionplus.md as .specify/memory/constitution.md"
+  elif [[ -f memory/constitutionplus.md ]]; then
     mkdir -p "$SPEC_DIR/memory"
     cp memory/constitutionplus.md "$SPEC_DIR/memory/constitution.md"
-    echo "Injected constitutionplus.md as .specify/memory/constitution.md"
-    # Do not ship constitutionplus.md in the archive
-    rm -f "$SPEC_DIR/memory/constitutionplus.md" 2>/dev/null || true
+    echo "Injected constitutionplus.md (legacy path) as .specify/memory/constitution.md"
   fi
+  # Do not ship constitutionplus.md in the archive
+  rm -f "$SPEC_DIR/memory/constitutionplus.md" 2>/dev/null || true
+  rm -f "$SPEC_DIR/templates/constitutionplus.md" 2>/dev/null || true
   
   # Only copy the relevant script variant directory
   if [[ -d scripts ]]; then
@@ -385,6 +394,11 @@ This file is generated during init for the selected agent.
       mkdir -p "$base_dir/.amazonq/prompts"
       generate_commands q md "\$ARGUMENTS" "$base_dir/.amazonq/prompts" "$script"
       generate_agent_rules q "$base_dir" ;;
+    agy)
+      mkdir -p "$base_dir/.agent/workflows"
+      generate_commands agy md "\$ARGUMENTS" "$base_dir/.agent/workflows" "$script"
+      generate_agent_rules agy "$base_dir" ;;
+
     bob)
       mkdir -p "$base_dir/.bob/commands"
       generate_commands bob md "\$ARGUMENTS" "$base_dir/.bob/commands" "$script"
@@ -395,7 +409,7 @@ This file is generated during init for the selected agent.
 }
 
 # Determine agent list
-ALL_AGENTS=(claude gemini copilot cursor-agent qwen opencode windsurf codex kilocode auggie roo codebuddy amp shai q bob qoder)
+ALL_AGENTS=(claude gemini copilot cursor-agent qwen opencode windsurf codex kilocode auggie roo codebuddy amp shai q agy bob qoder)
 ALL_SCRIPTS=(sh ps)
 
 norm_list() {
